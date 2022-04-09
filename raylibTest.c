@@ -10,7 +10,7 @@ const int screenHeight = 450;
 
 const float moveSpeed = 2.0;
 const float jumpHeight = 4.0;
-const float gravity = 1.5;
+const float gravity = 2.0;
 const float jumpTime = 1.0;
 
 typedef struct Player 
@@ -19,7 +19,6 @@ typedef struct Player
     float hSpeed;
     float vSpeed;
     float jumpTimer;
-    bool canJump;
 } Player;
 
 // Function called every frame to check for movement
@@ -37,7 +36,6 @@ void update(Player *player)
     if (IsKeyDown(KEY_UP) && player->jumpTimer > 0)
     { 
         player->position.y -= player->vSpeed;
-        player->canJump = False;
         player->jumpTimer = player->jumpTimer - GetFrameTime();
     }
 }
@@ -56,12 +54,12 @@ int main()
 {
     Rectangle ground = 
     {
-    0, screenHeight - 20, screenWidth, 20
+        0, screenHeight - 20, screenWidth, 20
     };
 
     Rectangle platform1 = 
     {
-    screenWidth / 2, screenHeight / 2 + 100, 100, 20
+        screenWidth / 2, screenHeight / 2 + 100, 100, 20
     };
 
 
@@ -70,7 +68,6 @@ int main()
     player.hSpeed = moveSpeed;
     player.vSpeed = jumpHeight;
     player.jumpTimer = jumpTime;
-    player.canJump = False;
 
     InitWindow(screenWidth, screenHeight, "Test");
 
@@ -106,7 +103,6 @@ int main()
 
         if (CheckCollisionRecs(playerSquare, ground) || CheckCollisionRecs(playerSquare, platform1))
         {
-            player.canJump = True;
             player.jumpTimer = 1;
             antiGravity(&player);
         }
