@@ -1,23 +1,36 @@
 #include "raylib.h"
 #include <stdio.h>
+#include <math.h>
 
 const bool True = 1;
 const bool False = 0;
+const float pi = 3.14159;
 
 // Dimensions in pixels
 const int screenWidth = 800;
 const int screenHeight = 450;
 
+const float gravity = 2.0;
+
 typedef struct Arrow
 {
     Vector2 position;
+    Rectangle image;
     float hVelocity;
     float vVelocity;
 } Arrow;
 
-void shoot()
+void applyGravity(Arrow *arrow)
 {
-    
+    arrow->position.y += gravity;
+}
+
+float findAngle(Arrow *arrow, Vector2 target)
+{
+    float xDifference = arrow->position.x - target.x;
+    float yDifference = arrow->position.y - target.y;
+    float slope = xDifference/yDifference;
+    return atan(slope) * (180/pi);
 }
 
 int main()
