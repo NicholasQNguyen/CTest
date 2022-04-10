@@ -12,9 +12,9 @@ const int screenWidth = 800;
 const int screenHeight = 450;
 
 // Initial speed values
-const float hSpeed = 5.0;
-const float vSpeed = 5.0;
-const float gravity = 2.0;
+const float hSpeed = 10.0;
+const float vSpeed = 10.0;
+const float gravity = 0.1;
 
 typedef struct Arrow
 {
@@ -48,7 +48,7 @@ void setVelocity(Arrow *arrow, float angle)
 
 void applyGravity(Arrow *arrow)
 {
-    arrow->vVelocity += gravity;
+    arrow->vVelocity -= gravity;
 }
 
 
@@ -91,6 +91,7 @@ int main()
                 }
                 DrawRectangleRec(arrow.image, BLUE); 
                 move(&arrow);
+                applyGravity(&arrow);
             }
         EndDrawing();
     }
