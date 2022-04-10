@@ -12,6 +12,7 @@ const float moveSpeed = 2.0;
 const float jumpHeight = 4.0;
 const float gravity = 2.0;
 const float jumpTime = 1.0;
+const int listSize = 3;
 
 typedef struct Player 
 {
@@ -56,12 +57,19 @@ int main()
     {
         0, screenHeight - 20, screenWidth, 20
     };
-
     Rectangle platform1 = 
     {
         screenWidth / 2, screenHeight / 2 + 100, 100, 20
     };
+    Rectangle platform2 = 
+    {
+        screenWidth / 2 - 80, screenHeight / 2 + 30, 100, 20
+    };
 
+    Rectangle rectangleList[listSize];
+    rectangleList[0] = ground;
+    rectangleList[1] = platform1;
+    rectangleList[2] = platform2;
 
     Player player = { 0 };
     player.position = (Vector2){0, screenHeight - ground.height - 40};
@@ -94,14 +102,20 @@ int main()
         BeginDrawing();
             ClearBackground(RAYWHITE);
             DrawText("Hello world!", 190, 200, 20, RED);
+            // Draw the squares representing the ground and platforms
+            for (int i = 0; i < listSize; i++)
+            {
+                DrawRectangleRec(rectangleList[i], BLUE);
+            }
             DrawRectangleRec(playerSquare, MAROON);
-            DrawRectangleRec(ground, BLUE);
-            DrawRectangleRec(platform1, BLUE);
+
         EndDrawing();
 
         applyGravity(&player);
 
-        if (CheckCollisionRecs(playerSquare, ground) || CheckCollisionRecs(playerSquare, platform1))
+        if (CheckCollisionRecs(playerSquare, ground) ||
+            CheckCollisionRecs(playerSquare, platform1) ||
+            CheckCollisionRecs(playerSquare, platform2))
         {
             player.jumpTimer = 1;
             antiGravity(&player);
