@@ -25,10 +25,10 @@ void applyGravity(Arrow *arrow)
     arrow->position.y += gravity;
 }
 
-float findAngle(Arrow *arrow, Vector2 target)
+float findAngle(Vector2 origin, Vector2 target)
 {
-    float xDifference = arrow->position.x - target.x;
-    float yDifference = arrow->position.y - target.y;
+    float xDifference = origin.x - target.x;
+    float yDifference = origin.y - target.y;
     float slope = xDifference/yDifference;
     return atan(slope) * (180/pi);
 }
