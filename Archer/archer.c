@@ -8,7 +8,7 @@ const bool True = 1;
 const bool False = 0;
 
 // Dimensions in pixels
-const int screenWidth = 800;
+const int screenWidth = 500;
 const int screenHeight = 450;
 
 // Initial speed values
@@ -58,9 +58,10 @@ int main()
     float angle = 0.0;
 
     int index = 0;
-    Arrow arrowList[10];
+    Arrow arrowList[100];
 
     Rectangle target = {screenWidth - 20, 0, 20, screenHeight};
+    int score = 0;
 
     // raylib window boilerplate
     InitWindow(screenWidth, screenHeight, "Archer");
@@ -107,8 +108,21 @@ int main()
             {
                 if (CheckCollisionRecs(arrowList[i].image, target) && !arrowList[i].hit)
                 {
+                    // Change a bool to make it hit only once
                     arrowList[i].hit = True;
-                    printf("Hit!\n");
+                    if (arrowList[i].image.y < screenHeight / 3)
+                    {
+                        score = score + 30;
+                    }
+                    else if (arrowList[i].image.y > screenHeight / 3 + screenHeight / 3)
+                    {
+                        score = score + 20;
+                    }
+                    else if (arrowList[i].image.y > screenHeight / 3)
+                    {
+                        score = score + 10;
+                    }
+                    printf("%d\n", score);
                 }
             }
             
