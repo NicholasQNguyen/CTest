@@ -6,10 +6,9 @@
 // Coding constants
 const bool True = 1;
 const bool False = 0;
-const float pi = 3.14159;
 
 // Dimensions in pixels
-const int screenWidth = 1200;
+const int screenWidth = 800;
 const int screenHeight = 450;
 
 // Initial speed values
@@ -24,6 +23,7 @@ typedef struct Arrow
     float hVelocity;
     float vVelocity;
     float angle;
+    bool hit;
 } Arrow;
 
 float findAngle(Vector2 origin, Vector2 target)
@@ -60,6 +60,8 @@ int main()
     int index = 0;
     Arrow arrowList[10];
 
+    Rectangle target = {screenWidth - 20, 0, 20, screenHeight};
+
     // raylib window boilerplate
     InitWindow(screenWidth, screenHeight, "Archer");
     SetTargetFPS(60);
@@ -82,7 +84,10 @@ int main()
         BeginDrawing();
             ClearBackground(RAYWHITE);
             DrawText("Hello world!", 190, 200, 20, RED);
+            // Draw the target
+            DrawRectangleRec(target, RED);
 
+            // Apply velocity to the most recent square
             if (velocityNeedsSetting)
             {
                 setVelocity(&arrowList[index], arrowList[index].angle);
@@ -90,11 +95,21 @@ int main()
                 velocityNeedsSetting = False;
             }
 
+            // move and apply gravity to all of the squares and draw them
             for (int i=0; i<=index; i++)
             {
                 move(&arrowList[i]);
                 applyGravity(&arrowList[i]);
                 DrawRectangleRec(arrowList[i].image, BLUE); 
+            }
+            // Check for collision between the arrows and the target
+            for (int i=0; i<=index; i++)
+            {
+                if (CheckCollisionRecs(arrowList[i].image, target) && !arrowList[i].hit)
+                {
+                    arrowList[i].hit = True;
+                    printf("Hit!\n");
+                }
             }
             
         EndDrawing();
